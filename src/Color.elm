@@ -1,65 +1,72 @@
 module Color exposing
     ( Color
-    , black
-    , blue
-    , brown
-    , charcoal
-    , complement
-    , darkBlue
-    , darkBrown
-    , darkCharcoal
-    , darkGray
-    , darkGreen
-    , darkGrey
-    , darkOrange
-    , darkPurple
-    , darkRed
-    , darkYellow
-    , gray
-    , grayscale
-    , green
-    , grey
-    , greyscale
-    , hsl
-    , hsla
-    , lightBlue
-    , lightBrown
-    , lightCharcoal
-    , lightGray
-    , lightGreen
-    , lightGrey
-    , lightOrange
-    , lightPurple
-    , lightRed
-    , lightYellow
-    , orange
-    , purple
-    , red
-    , rgb
-    , rgba
-    , toHsl
-    , toRgb
-    , white
-    , yellow
+    , rgb, rgba, hsl, hsla, grayscale, greyscale, complement
+    , toRgb, toHsl
+    , black, blue, brown, charcoal, darkBlue, darkBrown, darkCharcoal, darkGray
+    , darkGreen, darkGrey, darkOrange, darkPurple, darkRed, darkYellow, gray
+    , green, grey, lightBlue, lightBrown, lightCharcoal, lightGray, lightGreen
+    , lightGrey, lightOrange, lightPurple, lightRed, lightYellow, orange, purple
+    , red, white, yellow
     )
+
+{-| This module provides a simple way of describing colors as RGB with alpha transparency, based on this simple data structure:
+
+    type alias Color =
+        { red : Int, green : Int, blue : Int, alpha : Float }
+
+The intention here is to provide a minimal and convenient representation of color for rendering purposes.
+
+
+# The color representations:
+
+@docs Color
+
+
+# Constructors:
+
+@docs rgb, rgba, hsl, hsla, grayscale, greyscale, complement
+
+
+# Color space conversion/extraction:
+
+@docs toRgb, toHsl
+
+
+# Some basic colors to get you started:
+
+@docs black, blue, brown, charcoal, darkBlue, darkBrown, darkCharcoal, darkGray
+@docs darkGreen, darkGrey, darkOrange, darkPurple, darkRed, darkYellow, gray
+@docs green, grey, lightBlue, lightBrown, lightCharcoal, lightGray, lightGreen
+@docs lightGrey, lightOrange, lightPurple, lightRed, lightYellow, orange, purple
+@docs red, white, yellow
+
+-}
 
 -- Public API
 
 
+{-| A description of a color as computers see them.
+-}
 type alias Color =
     { red : Int, green : Int, blue : Int, alpha : Float }
 
 
+{-| Builds an RGBA color from all of its components.
+-}
 rgba : Int -> Int -> Int -> Float -> Color
 rgba =
     Color
 
 
+{-| Builds an RGBA color from its RGB components at 100% opacity.
+-}
 rgb : Int -> Int -> Int -> Color
 rgb r g b =
     { red = r, green = g, blue = b, alpha = 1 }
 
 
+{-| Builds and RGBA color from its hue, saturation, lighness and alpha (HSLA) representation.
+-}
 hsla : Float -> Float -> Float -> Float -> Color
 hsla hue saturation lightness alpha =
     let
@@ -69,21 +76,29 @@ hsla hue saturation lightness alpha =
     { red = floor r, green = floor g, blue = floor b, alpha = alpha }
 
 
+{-| Builds and RGBA color from its hue, saturation and lighness (HSL) representation at 100% opacity.
+-}
 hsl : Float -> Float -> Float -> Color
 hsl hue saturation lightness =
     hsla hue saturation lightness 1
 
 
+{-| Makes a grey level from 0 to 1.
+-}
 grayscale : Float -> Color
 grayscale p =
     hsla 0 0 (1 - p) 1
 
 
+{-| Makes a grey level from 0 to 1.
+-}
 greyscale : Float -> Color
 greyscale p =
     hsla 0 0 (1 - p) 1
 
 
+{-| Forms the complement of a color.
+-}
 complement : Color -> Color
 complement color =
     let
@@ -93,6 +108,8 @@ complement color =
     hsla (h + degrees 180) s l color.alpha
 
 
+{-| Converts the RGBA color to its HSLA representation.
+-}
 toHsl : Color -> { hue : Float, saturation : Float, lightness : Float, alpha : Float }
 toHsl color =
     let
@@ -102,9 +119,11 @@ toHsl color =
     { hue = h, saturation = s, lightness = l, alpha = color.alpha }
 
 
+{-| Converts the RGBA color to its RGBA representation - that is, does nothing.
+-}
 toRgb : Color -> { red : Int, green : Int, blue : Int, alpha : Float }
-toRgb color =
-    color
+toRgb =
+    identity
 
 
 
