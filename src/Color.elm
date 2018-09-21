@@ -73,7 +73,7 @@ hsla hue saturation lightness alpha =
         ( r, g, b ) =
             hslToRgb (hue - turns (toFloat (floor (hue / (2 * pi))))) saturation lightness
     in
-    { red = floor r, green = floor g, blue = floor b, alpha = alpha }
+    { red = floor (r * 255), green = floor (g * 255), blue = floor (b * 255), alpha = alpha }
 
 
 {-| Builds and RGBA color from its hue, saturation and lighness (HSL) representation at 100% opacity.
